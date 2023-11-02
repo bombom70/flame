@@ -1,6 +1,7 @@
 export interface IPeopleState {
   peoples: IPeople[],
-  currentPerson: IPeople
+  currentPerson: IPeople,
+  searchPeoples: IPeople[],
 }
 
 export interface IPeople {

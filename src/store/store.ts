@@ -1,7 +1,7 @@
 import { createStore } from "vuex"
 import { IPeopleState, IPeople } from "../models/models"
-import { fetchPeoples } from '../services/people';
 import { getId } from '../utils/getId'
+import { fetchPeoples, fetchSearchPeoples, fetchPeopleById } from '../services/people';
 
 export const peoplesStore = createStore({
   state(): IPeopleState {
@@ -14,7 +14,8 @@ export const peoplesStore = createStore({
         mass: '',
         hair_color: '',
         url: '',
-      }
+      },
+      searchPeoples: [],
     }
   },
   getters: {
@@ -27,11 +28,20 @@ export const peoplesStore = createStore({
     getFavoritesPeoples: (state: IPeopleState) => (ids: string[]): IPeople[] => {
       return state.peoples.filter(p => ids.includes(p.id));
     },
+    getSearchPeoples(state: IPeopleState): IPeople[] {
+      return state.searchPeoples;
+    },
   },
   mutations: {
     addPeoples (state: IPeopleState, payload: IPeople[]) {
       state.peoples = payload
-    }
+    },
+    addSearchPeoples (state: IPeopleState, payload: IPeople[]) {
+      state.searchPeoples = payload
+    },
+    setCurrentPerson(state: IPeopleState, payload: IPeople) {
+      state.currentPerson = payload
+    },
   },
   actions: {
     async fetchPeoples({ commit }) {
@@ -40,6 +50,18 @@ export const peoplesStore = createStore({
         return { ...p, id: getId(p.url) }
       })
       commit('addPeoples', peoples);
-    }
+    },
+    async fetchSearchPeoples({ commit }, query: string) {
+      if (query.trim() === '') {
+        commit('addSearchPeoples', []);
+        return
+      }
+      const { results } = await fetchSearchPeoples(query);
+      commit('addSearchPeoples', results);
+    },
+    async fetchPeopleById({ commit }, id: string) {
+      const data = await fetchPeopleById(id);
+      commit('setCurrentPerson', data);
+    },
   }
 })
