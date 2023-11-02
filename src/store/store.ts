@@ -1,16 +1,19 @@
 import { createStore } from "vuex"
 import { IPeopleState, IPeople } from "../models/models"
 import { fetchPeoples } from '../services/people';
+import { getId } from '../utils/getId'
 
 export const peoplesStore = createStore({
   state(): IPeopleState {
     return {
       peoples: [],
       currentPerson: {
+        id: '',
         name: '',
         height: '',
         mass: '',
-        hairColor: '',
+        hair_color: '',
+        url: '',
       }
     }
   },
@@ -20,7 +23,10 @@ export const peoplesStore = createStore({
     },
     getPerson(state: IPeopleState): IPeople {
       return state.currentPerson;
-    }
+    },
+    getFavoritesPeoples: (state: IPeopleState) => (ids: string[]): IPeople[] => {
+      return state.peoples.filter(p => ids.includes(p.id));
+    },
   },
   mutations: {
     addPeoples (state: IPeopleState, payload: IPeople[]) {
@@ -30,8 +36,10 @@ export const peoplesStore = createStore({
   actions: {
     async fetchPeoples({ commit }) {
       const { results } = await fetchPeoples();
-      console.log(results);
-      commit('addPeoples', results);
+      const peoples = results.map((p: IPeople) =>  {
+        return { ...p, id: getId(p.url) }
+      })
+      commit('addPeoples', peoples);
     }
   }
 })

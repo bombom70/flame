@@ -4,8 +4,10 @@ export interface IPeopleState {
 }
 
 export interface IPeople {
+  id: string
   name: string
   height: string
   mass: string
-  hairColor: string
+  hair_color: string
+  url: string
 }
