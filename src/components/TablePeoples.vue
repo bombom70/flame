@@ -1,40 +1,47 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { useStore } from 'vuex'
+import ButtonStorage from './ButtonStorage.vue';
 import { IPeople } from '../models/models'
 
-const store = useStore()
-const peoples = ref<IPeople[]>([])
+defineProps<{
+  peoples: IPeople[]
+}>()
 
-onMounted(async () => {
-  await store.dispatch('fetchPeoples')
-  peoples.value = store.state.peoples
-})
 </script>
 
 <template>
-  <table>
+  <table class="table">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Height</th>
-        <th>Mass</th>
-        <th>Hair color</th>
-        <th>Button</th>
+        <th class="table__th">Name</th>
+        <th class="table__th">Height</th>
+        <th class="table__th">Mass</th>
+        <th class="table__th">Hair color</th>
+        <th class="table__th">Button</th>
       </tr>
     </thead>
     <tbody>
       <tr
         v-for="people in peoples"
-        :key="people.name"
+        :key="people.id"
       >
-      {{ people['hair_color'] }}
         <td>{{ people.name }}</td>
         <td>{{ people.height }}</td>
         <td>{{ people.mass }}</td>
-        <td>{{ people.hairColor }}</td>
-        <td>Add to favorites</td>
+        <td>{{ people.hair_color }}</td>
+        <td>
+          <button-storage :id="people.id"/>
+        </td>
       </tr>
     </tbody>
   </table>
 </template>
+
+<style scoped>
+.table {
+  width: 100%;
+}
+
+.table__th {
+  text-align: start;  
+}
+</style>
