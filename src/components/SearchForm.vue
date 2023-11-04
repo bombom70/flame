@@ -1,25 +1,28 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import _ from 'lodash'
 
 const store = useStore()
+const value = ref('')
 
-const getSearchPeoples = _.debounce(async ({ target }) => {
-  await store.dispatch('fetchSearchPeoples', target.value)
+const getSearchPeoples = _.debounce(async (val: string) => {
+  await store.dispatch('fetchSearchPeoples', val)
   }, 
-  350,
-  { 'maxWait': 1000 }
+  500
 )
+
+watch(value, getSearchPeoples)
 
 </script>
 
 <template>
-  <form class="form">
+  <form @submit.prevent class="form">
     <input
       type="text"
       name="r"
       class="form__input"
-      @input="getSearchPeoples"
+      v-model="value"
     />
     <img class="form__icon" src="../assets/search.svg"/>
   </form>

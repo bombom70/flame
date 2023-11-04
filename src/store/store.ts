@@ -20,23 +20,20 @@ export const peoplesStore = createStore({
   },
   getters: {
     getPeoples(state: IPeopleState): IPeople[] {
-      return state.peoples;
+      return state.peoples
     },
     getPerson(state: IPeopleState): IPeople {
-      return state.currentPerson;
-    },
-    getFavoritesPeoples: (state: IPeopleState) => (ids: string[]): IPeople[] => {
-      return state.peoples.filter(p => ids.includes(p.id));
+      return state.currentPerson
     },
     getSearchPeoples(state: IPeopleState): IPeople[] {
-      return state.searchPeoples;
+      return state.searchPeoples
     },
   },
   mutations: {
-    addPeoples (state: IPeopleState, payload: IPeople[]) {
+    addPeoples(state: IPeopleState, payload: IPeople[]) {
       state.peoples = payload
     },
-    addSearchPeoples (state: IPeopleState, payload: IPeople[]) {
+    addSearchPeoples(state: IPeopleState, payload: IPeople[]) {
       state.searchPeoples = payload
     },
     setCurrentPerson(state: IPeopleState, payload: IPeople) {
@@ -45,7 +42,7 @@ export const peoplesStore = createStore({
   },
   actions: {
     async fetchPeoples({ commit }) {
-      const { results } = await fetchPeoples();
+      const { results } = await fetchPeoples()
       const peoples = results.map((p: IPeople) =>  {
         return { ...p, id: getId(p.url) }
       })
@@ -53,15 +50,15 @@ export const peoplesStore = createStore({
     },
     async fetchSearchPeoples({ commit }, query: string) {
       if (query.trim() === '') {
-        commit('addSearchPeoples', []);
+        commit('addSearchPeoples', [])
         return
       }
       const { results } = await fetchSearchPeoples(query);
-      commit('addSearchPeoples', results);
+      commit('addSearchPeoples', results)
     },
     async fetchPeopleById({ commit }, id: string) {
-      const data = await fetchPeopleById(id);
-      commit('setCurrentPerson', data);
+      const data = await fetchPeopleById(id)
+      commit('setCurrentPerson', data)
     },
   }
 })

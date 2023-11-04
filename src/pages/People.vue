@@ -14,6 +14,7 @@ onMounted(async () => {
 const peoples = computed(() => {
   return store.getters.getPeoples
 })
+
 </script>
 
 <template>

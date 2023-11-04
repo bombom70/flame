@@ -5,13 +5,10 @@ import { useStore } from 'vuex'
 
 const store = useStore()
 
-onMounted(async () => {
+onMounted(async() => {
   await store.dispatch('fetchPeoples')
 })
 
-const peoples = computed(() => {
-  return store.getters.getFavoritesPeoples(['1', '2', '3'])
-})
 </script>
 
 <template>
@@ -19,6 +16,6 @@ const peoples = computed(() => {
     <div class="header">
       <router-link to="/">Home</router-link>
     </div>
-    <TablePeoples :peoples="peoples"/>
+    <TablePeoples />
   </div>
 </template>

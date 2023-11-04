@@ -33,11 +33,14 @@ const peoples = computed(() => {
 
 <style scoped>
 .peoples-list {
+  position: absolute;
   max-width: 330px;
+  width: 100%;
   border-radius: 4px;
   border: 1px solid gray;
   box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
   background: white;
+  z-index: 2;
 }
 
 .peoples-list__item {
