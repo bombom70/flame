@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import _ from 'lodash'
 
@@ -13,6 +13,10 @@ const getSearchPeoples = _.debounce(async (val: string) => {
 )
 
 watch(value, getSearchPeoples)
+
+onMounted(async () => {
+  await store.dispatch('fetchSearchPeoples', '')
+})
 
 </script>
 
