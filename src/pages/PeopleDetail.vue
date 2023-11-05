@@ -22,8 +22,8 @@ watch(person, () => {
 
 <template>
   <div class="header">
-      <router-link to="/">Home</router-link>
-    </div>
+    <router-link to="/">Home</router-link>
+  </div>
   <table class="person-detail">
     <thead>
       <tr>
